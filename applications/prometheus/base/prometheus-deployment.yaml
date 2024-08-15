@@ -22,7 +22,35 @@ spec:
         volumeMounts:
         - mountPath: /prometheus
           name: prometheus-storage
+        args:
+        - --config.file=/etc/prometheus/prometheus.yml
+        - --storage.tsdb.path=/prometheus
+        - --web.console.libraries=/usr/share/prometheus/console_libraries
+        - --web.console.templates=/usr/share/prometheus/consoles
       volumes:
       - name: prometheus-storage
         persistentVolumeClaim:
           claimName: prometheus-pvc
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: prometheus-config
+  labels:
+    app: prometheus
+data:
+  prometheus.yml: |
+    global:
+      scrape_interval: 15s
+    scrape_configs:
+      - job_name: 'prometheus'
+        static_configs:
+          - targets: ['localhost:9090']
+      - job_name: 'node-exporter'
+        static_configs:
+          - targets:
+              - 'localhost:9100'
+              - 'rob5pi02:9100'
+              - 'rob5pi03:9100'
+              - 'rob5pi04:9100'
+              - 'rob5pi05:9100'
