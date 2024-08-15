@@ -1,4 +1,5 @@
 resources:
   - prometheus-deployment.yaml
   - prometheus-service.yaml
+  - prometheus-configmap.yaml
   - node-exporter-daemonset.yaml
