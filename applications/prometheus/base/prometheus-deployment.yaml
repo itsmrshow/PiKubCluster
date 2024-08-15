@@ -2,6 +2,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: prometheus-server
+  namespace: monitoring
   labels:
     app: prometheus
 spec:
@@ -20,8 +21,10 @@ spec:
         ports:
         - containerPort: 9090
         volumeMounts:
-        - mountPath: /prometheus
-          name: prometheus-storage
+        - name: prometheus-storage
+          mountPath: /prometheus
+        - name: config-volume
+          mountPath: /etc/prometheus
         args:
         - --config.file=/etc/prometheus/prometheus.yml
         - --storage.tsdb.path=/prometheus
@@ -31,24 +34,6 @@ spec:
       - name: prometheus-storage
         persistentVolumeClaim:
           claimName: prometheus-pvc
----
-apiVersion: v1
-kind: ConfigMap
-metadata:
-  name: prometheus-config
-  namespace: monitoring
-data:
-  prometheus.yml: |
-    global:
-      scrape_interval: 15s
-    scrape_configs:
-      - job_name: 'prometheus'
-        static_configs:
-          - targets: [10.0.0.11:9090]
-      - job_name: 'node-exporter'
-        static_configs:
-          - targets:
-              - 10.0.0.12:9100
-              - 10.0.0.13:9100
-              - 10.0.0.14:9100
-              - 10.0.0.15:9100
+      - name: config-volume
+        configMap:
+          name: prometheus-config
