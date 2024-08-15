@@ -8,10 +8,7 @@ spec:
   source:
     repoURL: 'https://github.com/itsmrshow/PiKubCluster.git'
     targetRevision: HEAD
-    path: applications/prometheus
-    helm:
-      valueFiles:
-        - helm-values.yaml
+    path: applications/prometheus/overlays/monitoring
   destination:
     server: 'https://kubernetes.default.svc'
     namespace: monitoring
