@@ -1,14 +1,17 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: prometheus
+  name: grafana
   namespace: argocd
 spec:
   project: default
   source:
-    repoURL: 'https://github.com/yourusername/yourrepo'
+    repoURL: 'https://github.com/itsmrshow/PiKubCluster.git'
     targetRevision: HEAD
-    path: applications/prometheus/overlays/monitoring
+    path: applications/grafana
+    helm:
+      valueFiles:
+        - helm-values.yaml
   destination:
     server: 'https://kubernetes.default.svc'
     namespace: monitoring

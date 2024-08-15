@@ -1,0 +1,31 @@
+alertmanager:
+  enabled: true
+  persistentVolume:
+    enabled: true
+    existingClaim: prometheus-pvc
+  persistentVolumeClaim:
+    create: false
+  tolerations:
+    - key: "node-role.kubernetes.io/control-plane"
+      operator: "Exists"
+      effect: "NoSchedule"
+
+prometheus-pushgateway:
+  enabled: false
+
+configmapReload:
+  prometheus:
+    enabled: false
+
+server:
+  nodeSelector:
+    kubernetes.io/hostname: rob5pi01
+  persistentVolume:
+    enabled: true
+    existingClaim: prometheus-pvc
+  persistentVolumeClaim:
+    create: false
+  tolerations:
+    - key: "node-role.kubernetes.io/control-plane"
+      operator: "Exists"
+      effect: "NoSchedule"
