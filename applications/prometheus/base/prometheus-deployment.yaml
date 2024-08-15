@@ -37,3 +37,4 @@ spec:
       - name: config-volume
         configMap:
           name: prometheus-config
+          #changed to config map
