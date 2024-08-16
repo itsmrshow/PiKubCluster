@@ -131,7 +131,7 @@ spec:
       serviceAccountName: speaker
       containers:
       - name: speaker
-        image: quay.io/metallb/speaker:v0.12.1
+        image: bitnami/metallb-speaker
         args:
         - --config=config
         env:
